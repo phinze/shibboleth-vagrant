@@ -26,7 +26,6 @@ class shibboleth::install(
   exec { 'shibboleth-installer':
     command     => 'chmod u+x install.sh && ./install.sh',
     cwd         => $shibboleth_src_dir,
-    logoutput   => true,
     user        => 'root',
     environment => 'JAVA_HOME=/usr/lib/jvm/java-6-openjdk',
     creates     => "${idp_home}/war",
