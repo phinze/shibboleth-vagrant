@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+<% users.each_pair do |username, password| %>
+  <user username="<%= username %>" password="<%= password %>" roles="user" />
+<% end %>
+</tomcat-users>

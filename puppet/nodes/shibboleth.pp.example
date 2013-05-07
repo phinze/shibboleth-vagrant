@@ -1,0 +1,47 @@
+node 'shibboleth.vagrant.dev' {
+  # a few support packages
+  package { [ 'vim-nox', 'curl' ]: ensure => installed }
+
+  # Services to be configured in the IdP
+  #   key   - short name for service (used for config file names etc)
+  #   value - URL where IdP can fetch metadata for said service
+  $service_providers = {
+    'my-awesome-project' => 'http://my-awesome-project.dev/path/to/saml_meta_data'
+  }
+
+  # Users to be configured in the IdP (via tomcat container-based auth)
+  #   key   - username
+  #   value - password
+  $users = {
+    'shibadmin' => 'shibshib'
+  }
+
+  class { 'shibboleth':
+    service_providers => $service_providers,
+    users             => $users
+  }
+}
+node 'shibboleth.vagrant.dev' {
+  # a few support packages
+  package { [
+    'vim-nox',
+    'curl'
+    ]:
+    ensure => installed
+  }
+
+  include shibboleth
+  shibboleth::circle_of_trust { 'vagrant': }
+
+  shibboleth::identity_provider { 'vagrant-idp':
+    circle_of_trust        => 'vagrant',
+    entity                 => "http://${fqdn}/shibboleth",
+    signing_certificate    => 'test',
+    encryption_certificate => 'test'
+  }
+
+  shibboleth::user { 'shibbolethuser':
+    password       => 'useruser',
+    email_address => 'user@example.com'
+  }
+}

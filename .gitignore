@@ -1,0 +1,6 @@
+.vagrant/
+.vagrant_dns.json
+
+shibboleth-identityprovider-2.4.0-bin.zip
+puppet/nodes/shibboleth.pp
+Vagrantfile
