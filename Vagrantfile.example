@@ -1,7 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.require_plugin 'vagrant-rubydns'
+required_plugins = %w( vagrant-landrush )
+required_plugins.each do |plugin|
+      system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
 
 Vagrant.configure("2") do |config|
   config.vm.box = 'precise64'
@@ -20,6 +24,5 @@ Vagrant.configure("2") do |config|
     puppet.module_path = "puppet/modules"
   end
 
-  config.rubydns.enable
-  config.rubydns.host 'my-awesome-project.dev', '10.0.2.2'
+  config.landrush.enable
 end
